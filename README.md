@@ -13,7 +13,7 @@ BE 현민영 - https://github.com/95hyun
 ### ❓ 개발 이유
 학창시절 친구들과 마피아게임 하기를 좋아했다.
 마침 적용해보고 싶은 기술이 Websocket을 이용한 '실시간채팅' 기능이었는데,
-실시간 채팅 외로도 Websocket을 활용하여 유저간 상호작용이 되는 '웹 마피아게임'을 만들어보면 재밌겠다는 생각이 들어 개발을 시작했다.
+실시간 채팅 외 로도 Websocket을 이용해 양방향 통신을 활용하여 '웹 마피아게임'을 만들어보면 재밌겠다는 생각이 들어 개발을 시작했다.
 
 ### 🛠️ 사용 기술 및 도구
 BE - Java 17, Spring Boot 3.2.3, Spring security, JWT, JPA, MySQL, Websocket, Github Actions, Nginx, Docker, AWS (EC2, RDS, S3, Route53)
