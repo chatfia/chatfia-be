@@ -16,7 +16,7 @@ BE 현민영 - https://github.com/95hyun
 실시간 채팅 외로도 Websocket을 활용하여 유저간 상호작용이 되는 '웹 마피아게임'을 만들어보면 재밌겠다는 생각이 들어 개발을 시작했다.
 
 ### 🛠️ 사용 기술 및 도구
-BE - Java 17, Spring Boot 3.2.3, Spring security, JWT, JPA, MySQL, Websocket, Github Actions, Nginx, Docker, AWS (EC2, RDS, S3)
+BE - Java 17, Spring Boot 3.2.3, Spring security, JWT, JPA, MySQL, Websocket, Github Actions, Nginx, Docker, AWS (EC2, RDS, S3, Route53)
 
 FE - Next.js, TypeScript, Tailwind CSS, React, Zustand, React-Query, Context API, Github Actions, Vercel
 
