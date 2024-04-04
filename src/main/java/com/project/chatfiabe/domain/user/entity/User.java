@@ -28,7 +28,14 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String nickname;
 
+    @OneToMany(mappedBy = "user")
+    private List<AccessToken> accessTokens;
 
+    @OneToMany(mappedBy = "user")
+    private List<RefreshToken> refreshTokens;
+
+    @OneToMany(mappedBy = "user")
+    private List<AccessLog> accessLogs;
 
     public User(String email, String password, String nickname) {
         this.email = email;
