@@ -28,18 +28,26 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String nickname;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AccessToken> accessTokens;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RefreshToken> refreshTokens;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AccessLog> accessLogs;
 
     public User(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
+    }
+
+    public void updateNickname(String newNickname) {
+        this.nickname = newNickname;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
     }
 }

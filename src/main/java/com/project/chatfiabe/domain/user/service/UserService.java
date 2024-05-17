@@ -1,7 +1,6 @@
 package com.project.chatfiabe.domain.user.service;
 
-import com.project.chatfiabe.domain.user.dto.SignupRequestDto;
-import com.project.chatfiabe.domain.user.dto.SignupResponseDto;
+import com.project.chatfiabe.domain.user.dto.*;
 import com.project.chatfiabe.domain.user.entity.User;
 import com.project.chatfiabe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +34,37 @@ public class UserService {
                 createUser.getPassword(),
                 createUser.getNickname()
         );
+    }
+
+    // 닉네임 수정
+    public UserInfoResponseDto updateUserInfo(User user, String newNickname) {
+        user.updateNickname(newNickname);
+        return new UserInfoResponseDto(user);
+    }
+
+    // 회원탈퇴
+    public void deleteUser(User user, DeleteUserInfoRequestDto requestDto) {
+        if (!passwordEncoder.matches(requestDto.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("기존의 비밀번호가 일치하지 않습니다.");
+        }
+
+        userRepository.delete(user);
+    }
+
+    // 비밀번호 변경
+    public void updatePassword(User user, UserInfoRequestDto requestDto) {
+        if (!passwordEncoder.matches(requestDto.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("기존의 비밀번호가 일치하지 않습니다.");
+        }
+
+        if (requestDto.getNewPassword() != null) {
+            throw new NullPointerException("새로운 비밀번호가 입력되지 않았습니다.");
+        }
+
+        if (!requestDto.getNewPassword().equals(requestDto.getNewPasswordConfirm())) {
+            throw new IllegalArgumentException("새 비밀번호 확인이 틀렸습니다.");
+        }
+
+        user.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
     }
 }
