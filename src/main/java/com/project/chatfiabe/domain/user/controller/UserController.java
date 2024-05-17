@@ -50,7 +50,7 @@ public class UserController {
     }
 
     // 닉네임 수정
-    @PatchMapping("/updateNickname")
+    @PatchMapping("/info/nickname")
     public ResponseEntity<UserInfoResponseDto> updateNickname(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserInfoRequestDto requestDto) {
         UserInfoResponseDto updatedUser = userService.updateUserInfo(userDetails.getUser(), requestDto.getNickname());
         return ResponseEntity.ok(updatedUser);
@@ -58,14 +58,21 @@ public class UserController {
 
     // 비밀번호 변경
     // 현재 비밀번호, 새 비밀번호 == 새 비밀번호 확인
-    @PatchMapping("/updatePassword")
+    @PatchMapping("/info/password")
     public ResponseEntity<String> updatePassword(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserInfoRequestDto requestDto) {
         userService.updatePassword(userDetails.getUser(), requestDto);
         return ResponseEntity.ok("비밀번호 수정이 완료되었습니다.");
     }
 
+    // 회원 정보 조회
+    @GetMapping
+    public ResponseEntity<UserInfoResponseDto> getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UserInfoResponseDto userInfoResponseDto = userService.getUserInfo(userDetails.getUser());
+        return ResponseEntity.ok(userInfoResponseDto);
+    }
+
     // 회원 탈퇴
-    @DeleteMapping
+    @DeleteMapping("/info")
     public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody DeleteUserInfoRequestDto requestDto) {
         userService.deleteUser(userDetails.getUser(), requestDto);
         return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");

@@ -67,4 +67,10 @@ public class UserService {
 
         user.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
     }
+
+    // 회원정보 조회
+    public UserInfoResponseDto getUserInfo(User user) {
+
+        return new UserInfoResponseDto(user.getId(), user.getEmail(), user.getNickname());
+    }
 }
