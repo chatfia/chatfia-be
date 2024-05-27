@@ -5,14 +5,14 @@ pipeline {
         stage('Build') {
             steps {
                 sh './gradlew build'
-                sh 'docker build -t my_spring_boot_app .'
+                sh 'docker build -t chatfia .'
             }
         }
         stage('Deploy to Blue') {
             steps {
                 script {
                     // Blue 환경에 배포
-                    sh 'docker-compose up -d springboot-blue'
+                    sh 'docker-compose up -d chatfia-blue'
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     // Green 환경에 배포
-                    sh 'docker-compose up -d springboot-green'
+                    sh 'docker-compose up -d chatfia-green'
                 }
             }
         }
