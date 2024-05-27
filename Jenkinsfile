@@ -6,6 +6,7 @@ pipeline {
             steps {
                 sh 'echo "Building the application..."'
                 sh './gradlew build'
+                sh 'docker login -u 95hyun '
                 sh 'echo "Building Docker image..."'
                 sh 'docker build -t chatfia_image .'
             }
