@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh './gradlew build'
-                sh 'docker build -t chatfia .'
+                sh 'docker build -t chatfia_image .'
             }
         }
         stage('Deploy to Blue') {
