@@ -40,9 +40,9 @@ jobs:
           contains(github.ref, 'develop')
         run: |
           cd ./src/main/resources
-            touch ./application.yml
-            echo "${{ secrets.YML }}" > ./application.yml
-          shell: bash
+          touch ./application.yml
+          echo "${{ secrets.YML }}" > ./application.yml
+        shell: bash
 
       # gradle build
       - name: Build with Gradle
