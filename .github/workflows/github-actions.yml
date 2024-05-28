@@ -58,10 +58,10 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/chatfia .
           docker push ${{ secrets.DOCKER_USERNAME }}/chatfia
 
-      # pull to develop
-      - name: Pull to develop
+      # deploy to develop
+      - name: deploy to develop
         uses: appleboy/ssh-action@master
-        id: pull-dev
+        id: deploy-dev
         if: |
           contains(github.ref, 'main') ||
           contains(github.ref, 'develop')
@@ -73,26 +73,31 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker ps
+            sudo docker stop $(docker ps -a -q)
+            sudo rm $(docker ps -a -q)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/chatfia
+            sudo docker un -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/chatfia
+            sudo docker image prune -f
 
-  docker-pull-and-run:
-    runs-on: [self-hosted, develop]
-    if: ${{ needs.CI-CD.result == 'success' }}
-    needs: [ CI-CD ]
-    steps:
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-#      - name: Install AWS CLI
+# 무중단배포한다면 아래 활성화
+#  docker-pull-and-run:
+#    runs-on: [self-hosted, develop]
+#    if: ${{ needs.CI-CD.result == 'success' }}
+#    needs: [ CI-CD ]
+#    steps:
+#      - name: Set up AWS CLI
+#        uses: aws-actions/configure-aws-credentials@v2
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ap-northeast-2
+#
+##      - name: Install AWS CLI
+##        run: |
+##          sudo apt-get update
+##          sudo apt-get install -y awscli
+#
+#      - name: 배포 스크립트 실행
 #        run: |
-#          sudo apt-get update
-#          sudo apt-get install -y awscli
-
-      - name: 배포 스크립트 실행
-        run: |
-          sh /deploy.sh
-          sudo docker image prune -f
+#          sh /deploy.sh
+#          sudo docker image prune -f
