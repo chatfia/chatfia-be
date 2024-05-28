@@ -73,10 +73,10 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker ps
-            sudo docker stop $(docker ps -a -q)
-            sudo rm $(docker ps -a -q)
+            sudo docker stop $(docker ps -a -q) || true
+            sudo rm $(docker ps -a -q) || true
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/chatfia
-            sudo docker un -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/chatfia
+            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/chatfia
             sudo docker image prune -f
 
 # 무중단배포한다면 아래 활성화
