@@ -21,6 +21,10 @@ public class UserService {
             throw new RuntimeException(requestDto.getEmail() + "already exists");
         }
 
+        if (!requestDto.getPassword().equals(requestDto.getConfirmPassword())) {
+            throw new IllegalArgumentException("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        }
+
         User createUser = new User(
                 requestDto.getEmail(),
                 passwordEncoder.encode(requestDto.getPassword()),
