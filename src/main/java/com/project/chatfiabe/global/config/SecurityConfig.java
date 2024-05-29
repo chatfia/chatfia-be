@@ -115,20 +115,20 @@ public class SecurityConfig {
         return security.build();
     }
 
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("https://www.chatfia.online");
-        config.addAllowedOriginPattern("https://chatfia.online");
-        config.addAllowedOriginPattern("https://api.chatfia.online");
-        config.addAllowedOriginPattern("https://chatfia.vercel.app");
-        config.addAllowedOriginPattern("http://localhost:3000");
-        config.addAllowedOriginPattern("http://localhost:3001");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.setAllowCredentials(true);
+//        config.addAllowedOriginPattern("https://www.chatfia.online");
+//        config.addAllowedOriginPattern("https://chatfia.online");
+//        config.addAllowedOriginPattern("https://api.chatfia.online");
+//        config.addAllowedOriginPattern("https://chatfia.vercel.app");
+//        config.addAllowedOriginPattern("http://localhost:3000");
+//        config.addAllowedOriginPattern("http://localhost:3001");
+//        config.addAllowedHeader("*");
+//        config.addAllowedMethod("*");
+//        source.registerCorsConfiguration("/**", config);
+//        return new CorsFilter(source);
+//    }
 }
