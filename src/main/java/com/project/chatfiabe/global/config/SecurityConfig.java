@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -83,6 +84,8 @@ public class SecurityConfig {
         // CSRF(사이트 간 요청 위조) 설정 비활성화 : B/C 세션 방식이 아닌 JWT 방식을 사용
         security.csrf((csrf) -> csrf.disable());
         security.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+
+        security.cors(Customizer.withDefaults()); // CORS 설정 추가
 
         // API 제어 설정 : 요청된 URI(URL) 기반으로 인증/인가 제어
         security.authorizeHttpRequests((request) ->
