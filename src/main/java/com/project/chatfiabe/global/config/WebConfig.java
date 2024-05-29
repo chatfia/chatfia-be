@@ -11,9 +11,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOriginPatterns("https://www.chatfia.online")
                 .allowedOriginPatterns("https://chatfia.online")
                 .allowedOriginPatterns("https://api.chatfia.online")
+                .allowedOriginPatterns("http://www.chatfia.online")
+                .allowedOriginPatterns("http://chatfia.online")
+                .allowedOriginPatterns("http://api.chatfia.online")
                 .allowedOriginPatterns("https://chatfia.vercel.app")
+                .allowedOriginPatterns("http://chatfia.vercel.app")
                 .allowedOriginPatterns("http:localhost:3000")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-                .allowCredentials(true);
+                .allowCredentials(true)
+                .maxAge(3000);
     }
 }
