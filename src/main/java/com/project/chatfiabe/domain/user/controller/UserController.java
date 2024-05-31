@@ -23,7 +23,7 @@ public class UserController {
     private final UserService userService;
     private final TokenBlackListService tokenBlackListService;
 
-    @GetMapping("/signup")
+    @PostMapping("/signup")
     public ResponseEntity<SignupResponseDto> signup(@RequestBody SignupRequestDto requestDto) {
         return ResponseEntity.ok(userService.signup(requestDto));
     }
