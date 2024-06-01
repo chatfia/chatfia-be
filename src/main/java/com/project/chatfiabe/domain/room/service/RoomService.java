@@ -43,7 +43,7 @@ public class RoomService {
                         room.getHostId(),
                         room.isPrivate(),
                         room.getPlayers().stream()
-                                .map(user -> new RoomUserResponseDto(user.getId(), user.getUsername()))
+                                .map(user -> new RoomUserResponseDto(user.getId(), user.getNickname()))
                                 .collect(Collectors.toList())))
                 .collect(Collectors.toList());
     }
@@ -62,7 +62,7 @@ public class RoomService {
                 room.getHostId(),
                 room.isPrivate(),
                 room.getPlayers().stream()
-                        .map(u -> new RoomUserResponseDto(u.getId(), u.getUsername()))
+                        .map(u -> new RoomUserResponseDto(u.getId(), u.getNickname()))
                         .collect(Collectors.toList())
         );
     }
