@@ -17,13 +17,16 @@ public class Room {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String roomName;
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private User owner;
+    private Long hostId;
 
-//    @ManyToOne
-//    @Join
-//    private List<User> participants = new ArrayList<>();
+    private int maxPlayers = 6;
+
+    private boolean isPrivate;
+
+    private String password;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<User> players = new ArrayList<>();
 }

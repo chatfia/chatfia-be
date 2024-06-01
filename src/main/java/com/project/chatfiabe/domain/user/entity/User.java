@@ -1,5 +1,6 @@
 package com.project.chatfiabe.domain.user.entity;
 
+import com.project.chatfiabe.domain.room.entity.Room;
 import com.project.chatfiabe.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +28,13 @@ public class User extends BaseEntity {
     @NotNull(message = "닉네임은 필수입니다")
     @Column(nullable = false, unique = true)
     private String nickname;
+
+    private int wins;
+
+    private int losses;
+
+    @ManyToOne
+    private Room room;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AccessToken> accessTokens;
