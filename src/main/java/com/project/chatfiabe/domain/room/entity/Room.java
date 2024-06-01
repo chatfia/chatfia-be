@@ -29,4 +29,29 @@ public class Room {
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> players = new ArrayList<>();
+
+    public Room(String name, Long id, boolean aPrivate, String password) {
+        this.name = name;
+        this.hostId = id;
+        this.isPrivate = aPrivate;
+        this.password =  password;
+    }
+
+    // 플레이어 방에 추가
+    public void addPlayer(User user) {
+        if (players.size() < maxPlayers) {
+            players.add(user);
+            user.setRoom(this);
+        } else {
+            throw new RuntimeException("Room is full");
+        }
+    }
+
+
+    // 플레이어 방에서 제거
+    public void removePlayer(User user) {
+        players.remove(user);
+        user.setRoom(null);
+    }
+
 }

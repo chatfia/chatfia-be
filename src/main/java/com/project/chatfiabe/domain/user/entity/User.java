@@ -49,6 +49,8 @@ public class User extends BaseEntity {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
+        this.wins = 0;
+        this.losses = 0;
     }
 
     public void updateNickname(String newNickname) {
@@ -57,5 +59,25 @@ public class User extends BaseEntity {
 
     public void updatePassword(String password) {
         this.password = password;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    // 유저 승률
+    public double getWinRate() {
+        int totalGames = wins + losses;
+        return totalGames == 0 ? 0 : (double) wins / totalGames;
+    }
+
+    // 유저 승리 횟수+
+    public void plusWins() {
+        this.wins++;
+    }
+
+    // 유저 패배 횟수+
+    public void plusLosses() {
+        this.losses++;
     }
 }

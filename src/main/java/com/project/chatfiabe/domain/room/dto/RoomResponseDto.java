@@ -14,5 +14,13 @@ public class RoomResponseDto {
     private String name;
     private Long hostId;
     private boolean isPrivate;
-    private List<UserInfoResponseDto> players;
+    private List<RoomUserResponseDto> players;
+
+    public RoomResponseDto(Long id, String name, Long hostId, boolean aPrivate, List<RoomUserResponseDto> players) {
+        this.id = id;
+        this.name = name;
+        this.hostId = hostId;
+        this.isPrivate = aPrivate;
+        this.players = players;
+    }
 }
