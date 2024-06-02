@@ -1,6 +1,7 @@
 package com.project.chatfiabe.domain.room.entity;
 
 import com.project.chatfiabe.domain.user.entity.User;
+import com.project.chatfiabe.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Room {
+public class Room extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

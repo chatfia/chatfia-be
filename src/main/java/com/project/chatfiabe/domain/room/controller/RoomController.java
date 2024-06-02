@@ -54,4 +54,26 @@ public class RoomController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 방 이름으로 검색
+    @GetMapping("/search")
+    public ResponseEntity<List<RoomResponseDto>> searchRoomsByName(@RequestParam String name) {
+        List<RoomResponseDto> rooms = roomService.searchRoomsByName(name);
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
+    }
+
+    // 등록일 순으로 방 조회
+    @GetMapping("/sorted-by-date")
+    public ResponseEntity<List<RoomResponseDto>> getRoomsSortedByCreatedDate(@RequestParam String order) {
+        boolean ascending = "asc".equalsIgnoreCase(order); // order 값이 "asc"이면 ascending은 true, "desc"이면 false
+        List<RoomResponseDto> rooms = roomService.getRoomsSortedByCreatedDate(ascending);
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
+    }
+
+    // 현재 참여 인원 순으로 방 조회
+    @GetMapping("/sorted-by-players")
+    public ResponseEntity<List<RoomResponseDto>> getRoomsSortedByPlayerCount(@RequestParam String order) {
+        boolean ascending = "asc".equalsIgnoreCase(order); // order 값이 "asc"이면 ascending은 true, "desc"이면 false
+        List<RoomResponseDto> rooms = roomService.getRoomsSortedByPlayerCount(ascending);
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
+    }
 }

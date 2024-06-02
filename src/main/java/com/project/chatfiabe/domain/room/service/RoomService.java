@@ -87,4 +87,48 @@ public class RoomService {
         }
     }
 
+    // 방 이름으로 검색
+    public List<RoomResponseDto> searchRoomsByName(String name) {
+        return roomRepository.findByNameContaining(name).stream()
+                .map(room -> new RoomResponseDto(
+                        room.getId(),
+                        room.getName(),
+                        room.getHostId(),
+                        room.isPrivate(),
+                        room.getPlayers().stream()
+                                .map(user -> new RoomUserResponseDto(user.getId(), user.getNickname()))
+                                .collect(Collectors.toList())))
+                .collect(Collectors.toList());
+    }
+
+    // 등록일 순으로 방 조회
+    public List<RoomResponseDto> getRoomsSortedByCreatedDate(boolean ascending) {
+        List<Room> rooms = ascending ? roomRepository.findAllByOrderByCreateAtAsc() : roomRepository.findAllByOrderByCreateAtDesc();
+        return rooms.stream()
+                .map(room -> new RoomResponseDto(
+                        room.getId(),
+                        room.getName(),
+                        room.getHostId(),
+                        room.isPrivate(),
+                        room.getPlayers().stream()
+                                .map(user -> new RoomUserResponseDto(user.getId(), user.getNickname()))
+                                .collect(Collectors.toList())))
+                .collect(Collectors.toList());
+    }
+
+    // 현재 참여 인원 순 방 조회
+    public List<RoomResponseDto> getRoomsSortedByPlayerCount(boolean ascending) {
+        List<Room> rooms = ascending ? roomRepository.findAllByOrderByPlayersSizeAsc() : roomRepository.findAllByOrderByPlayersSizeDesc();
+        return rooms.stream()
+                .map(room -> new RoomResponseDto(
+                        room.getId(),
+                        room.getName(),
+                        room.getHostId(),
+                        room.isPrivate(),
+                        room.getPlayers().stream()
+                                .map(user -> new RoomUserResponseDto(user.getId(), user.getNickname()))
+                                .collect(Collectors.toList())))
+                .collect(Collectors.toList());
+    }
+
 }
