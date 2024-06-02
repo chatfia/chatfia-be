@@ -8,6 +8,7 @@ import com.project.chatfiabe.domain.user.service.TokenBlackListService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,8 @@ public class TokenBlackListServiceImpl implements TokenBlackListService {
     private final JwtProvider jwtProvider;
     private final TokenBlackListRepository tokenBlackListRepository;
 
+    @Override
+    @Transactional
     public void addToBlackList(String accessToken, String refreshToken) {
         Claims accessClaims = jwtProvider.getUserInfoFromToken(accessToken);
         Claims refreshClaims = jwtProvider.getUserInfoFromToken(refreshToken);
@@ -38,11 +41,15 @@ public class TokenBlackListServiceImpl implements TokenBlackListService {
         ));
     }
 
+    @Override
+    @Transactional
     public boolean isTokenBlacklisted(String jti) {
         Optional<TokenBlackList> tokenByJti = tokenBlackListRepository.findByJti(jti);
         return tokenByJti.isPresent();
     }
 
+    @Override
+    @Transactional
     public void removeExpiredTokens() {
         List<TokenBlackList> expiredList = tokenBlackListRepository.findAllByExpiresAtLessThan(new Date());
         tokenBlackListRepository.deleteAllInBatch(expiredList);

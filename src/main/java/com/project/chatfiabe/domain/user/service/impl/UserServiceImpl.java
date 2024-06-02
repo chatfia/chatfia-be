@@ -7,6 +7,7 @@ import com.project.chatfiabe.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 @Service
@@ -15,6 +16,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Override
+    @Transactional
     public SignupResponseDto signup(SignupRequestDto requestDto) {
         Optional<User> userByEmail = userRepository.findByEmail(requestDto.getEmail());
         if (userByEmail.isPresent()) {
@@ -40,12 +43,16 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    @Override
+    @Transactional
     // 닉네임 수정
     public UserInfoResponseDto updateUserInfo(User user, String newNickname) {
         user.updateNickname(newNickname);
         return new UserInfoResponseDto(user);
     }
 
+    @Override
+    @Transactional
     // 회원탈퇴
     public void deleteUser(User user, DeleteUserInfoRequestDto requestDto) {
         if (!passwordEncoder.matches(requestDto.getCurrentPassword(), user.getPassword())) {
@@ -55,6 +62,8 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
+    @Override
+    @Transactional
     // 비밀번호 변경
     public void updatePassword(User user, UserInfoRequestDto requestDto) {
         if (!passwordEncoder.matches(requestDto.getCurrentPassword(), user.getPassword())) {
@@ -72,6 +81,8 @@ public class UserServiceImpl implements UserService {
         user.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
     }
 
+    @Override
+    @Transactional(readOnly = true)
     // 회원정보 조회
     public UserInfoResponseDto getUserInfo(User user) {
 
