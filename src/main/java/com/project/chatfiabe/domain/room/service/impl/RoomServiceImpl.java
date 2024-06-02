@@ -119,6 +119,12 @@ public class RoomServiceImpl implements RoomService {
         userRepository.save(user);
         if (room.getNumberOfPlayer() == 0) {
             roomRepository.delete(room);
+        } else {
+            // 방장이 나갈 경우, 다음 플레이어에게 방장 권한을 위임
+            if (room.getHostId().equals(user.getId())) {
+                room.setHostId(room.getPlayers().get(0).getId());
+            }
+            roomRepository.save(room);
         }
     }
 

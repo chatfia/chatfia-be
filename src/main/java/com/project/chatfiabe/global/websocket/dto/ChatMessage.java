@@ -1,4 +1,4 @@
-package com.project.chatfiabe.global.dto;
+package com.project.chatfiabe.global.websocket.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
-package com.project.chatfiabe.global.controller;
+package com.project.chatfiabe.global.websocket.controller;
 
-import com.project.chatfiabe.global.dto.ChatMessage;
+import com.project.chatfiabe.global.websocket.dto.ChatMessage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;

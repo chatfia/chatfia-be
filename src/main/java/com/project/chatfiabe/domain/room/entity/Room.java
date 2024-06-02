@@ -62,4 +62,10 @@ public class Room extends BaseEntity {
     public int getNumberOfPlayer() {
         return players.size();
     }
+
+
+    public void setHostId(Long hostId) {
+        this.hostId = hostId;
+    }
+
 }

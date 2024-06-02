@@ -1,4 +1,4 @@
-package com.project.chatfiabe.global.config;
+package com.project.chatfiabe.global.websocket.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
