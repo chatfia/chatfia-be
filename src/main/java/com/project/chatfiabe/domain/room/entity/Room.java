@@ -34,7 +34,7 @@ public class Room {
         this.name = name;
         this.hostId = id;
         this.isPrivate = aPrivate;
-        this.password =  password;
+        this.password =  isPrivate ? password : null;
     }
 
     // 플레이어 방에 추가
@@ -52,6 +52,13 @@ public class Room {
     public void removePlayer(User user) {
         players.remove(user);
         user.setRoom(null);
+        if (user.getId().equals(hostId) && !players.isEmpty()) {
+            // 방장이 나갈 경우 새로운 방장에게 방장 위임
+            this.hostId = players.get(0).getId();
+        }
     }
 
+    public int getNumberOfPlayer() {
+        return players.size();
+    }
 }

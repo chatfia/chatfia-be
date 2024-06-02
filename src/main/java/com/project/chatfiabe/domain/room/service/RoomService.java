@@ -50,9 +50,9 @@ public class RoomService {
 
     // 방 참여
     public RoomResponseDto joinRoom(Long roomId, User user, String password) {
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("방을 찾을 수 없습니다"));
         if (room.isPrivate() && (password == null || !room.getPassword().equals(password))) {
-            throw new RuntimeException("Invalid password");
+            throw new RuntimeException("패스워드가 올바르지 않습니다.");
         }
         room.addPlayer(user);
         userRepository.save(user);
@@ -69,12 +69,22 @@ public class RoomService {
 
     // 유저 강퇴
     public void kickPlayer(Long roomId, User user) {
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("Room not found"));
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("방을 찾을 수 없습니다"));
         if (!room.getHostId().equals(user.getId())) {
-            throw new RuntimeException("Only the host can kick players");
+            throw new RuntimeException("방장만 강제퇴장 시킬 수 있습니다");
         }
         room.removePlayer(user);
         userRepository.save(user);
+    }
+
+    // 방에서 퇴장
+    public void leaveRoom(Long roomId, User user) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("방을 찾을 수 없습니다"));
+        room.removePlayer(user);
+        userRepository.save(user);
+        if (room.getNumberOfPlayer() == 0) {
+            roomRepository.delete(room);
+        }
     }
 
 }

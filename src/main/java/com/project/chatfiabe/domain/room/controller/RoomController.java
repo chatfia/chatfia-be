@@ -3,7 +3,6 @@ package com.project.chatfiabe.domain.room.controller;
 import com.project.chatfiabe.domain.room.dto.RoomRequestDto;
 import com.project.chatfiabe.domain.room.dto.RoomResponseDto;
 import com.project.chatfiabe.domain.room.service.RoomService;
-import com.project.chatfiabe.domain.user.entity.User;
 import com.project.chatfiabe.domain.user.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,6 +44,13 @@ public class RoomController {
     @PostMapping("/{roomId}/kick")
     public ResponseEntity<Void> kickPlayer(@PathVariable Long roomId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         roomService.kickPlayer(roomId, userDetails.getUser());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // 방에서 유저 퇴장
+    @PostMapping("/{roomId}/leave")
+    public ResponseEntity<Void> leaveRoom(@PathVariable Long roomId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        roomService.leaveRoom(roomId, userDetails.getUser());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
