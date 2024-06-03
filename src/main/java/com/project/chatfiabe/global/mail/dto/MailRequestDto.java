@@ -9,4 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MailRequestDto {
     private String email;
+    private String code;
 }

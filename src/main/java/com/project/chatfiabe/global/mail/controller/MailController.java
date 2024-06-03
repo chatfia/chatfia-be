@@ -1,7 +1,6 @@
 package com.project.chatfiabe.global.mail.controller;
 
 import com.project.chatfiabe.global.mail.dto.MailRequestDto;
-import com.project.chatfiabe.global.mail.dto.MailResponseDto;
 import com.project.chatfiabe.global.mail.service.MailService;
 import com.project.chatfiabe.global.mail.service.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +29,12 @@ public class MailController {
 
     // 인증번호 확인 버튼 클릭
     @GetMapping
-    public ResponseEntity<MailResponseDto> getCode (@RequestBody MailRequestDto requestDto) {
+    public ResponseEntity<Void> getCode (@RequestBody MailRequestDto requestDto) {
         String code = redisService.getCode(requestDto.getEmail());
-        return new ResponseEntity<>(new MailResponseDto(code), HttpStatus.OK);
+        if (!code.equals(requestDto.getCode())) {
+            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
