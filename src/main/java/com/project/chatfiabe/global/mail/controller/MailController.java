@@ -20,11 +20,23 @@ public class MailController {
     private final RedisService redisService;
 
     // 이메일 인증 버튼 클릭
+//    @PostMapping
+//    public ResponseEntity<Void> sendSignupMail(@RequestBody MailRequestDto requestDto) {
+//        String code = mailService.sendSignupMail(requestDto.getEmail());
+//        redisService.setCode(requestDto.getEmail(), code);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+
+    // 테스트용 이메일 인증
     @PostMapping
-    public ResponseEntity<Void> sendSignupMail(@RequestBody MailRequestDto requestDto) {
-        String code = mailService.sendSignupMail(requestDto.getEmail());
-        redisService.setCode(requestDto.getEmail(), code);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> sendSignupMail(@RequestBody MailRequestDto requestDto) {
+        try {
+            String code = mailService.sendSignupMail(requestDto.getEmail());
+            redisService.setCode(requestDto.getEmail(), code);
+            return new ResponseEntity<>("성공", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Redis connection failed: " + e.getMessage());
+        }
     }
 
     // 인증번호 확인 버튼 클릭
