@@ -42,4 +42,5 @@ public class GameController {
         gameService.handleDoctorTurn(gameId, targetId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
