@@ -41,9 +41,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // JWT
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2' // 최신 안정 버전 사용
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2' // Jackson을 사용하는 경우
 
     // validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'

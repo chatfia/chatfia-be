@@ -73,10 +73,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     public void setAuthentication(String email) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = createAuthentication(email);
-        context.setAuthentication(authentication);
-
-        SecurityContextHolder.setContext(context);
-        log.info("Authentication set for email : {}", email);
+        if (authentication != null) {
+            context.setAuthentication(authentication);
+            SecurityContextHolder.setContext(context);
+            log.info("Authentication set for email : {}", email);
+        } else {
+            log.info("Authentication creation failed for email: {}", email);
+        }
     }
 
     /**
