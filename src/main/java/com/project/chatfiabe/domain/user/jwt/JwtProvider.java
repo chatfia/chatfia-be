@@ -65,7 +65,7 @@ public class JwtProvider {
      * @return JWT 토큰
      */
     public String createToken(TokenPayload payload) {
-        String accessToken = BEARER_PREFIX +
+        return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(payload.getSub()) // 사용자 식별자값(ID)
                         .setExpiration(payload.getExpiresAt()) // 만료 시간
@@ -73,7 +73,6 @@ public class JwtProvider {
                         .setId(payload.getJti()) // JWT ID
                         .signWith(key, signatureAlgorithm) // 암호화 Key & 알고리즘
                         .compact();
-        return accessToken;
     }
 
     /**
@@ -96,13 +95,12 @@ public class JwtProvider {
      */
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             log.error("Invalid Token: " + e.getMessage());
             return false;
         }
-
     }
 
     /**
@@ -111,12 +109,15 @@ public class JwtProvider {
      * @return Claims
      */
     public Claims getUserInfoFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        log.info("User info extracted from token: {}", claims.getSubject());
-        return claims;
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            log.error("Failed to get user info from token: " + e.getMessage());
+            return null;
+        }
     }
 }

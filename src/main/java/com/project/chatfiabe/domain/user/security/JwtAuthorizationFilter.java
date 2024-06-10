@@ -43,8 +43,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             try {
                 setAuthentication(info.getSubject());
+                log.info("Authentication set with access token for user: {}", info.getSubject());
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error("Failed to set authentication with access token: " + e.getMessage());
                 return;
             }
         } else if (StringUtils.hasText(refreshToken)) {
@@ -57,8 +58,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             try {
                 setAuthentication(info.getSubject());
+                log.info("Authentication set with refresh token for user: {}", info.getSubject());
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error("Failed to set authentication with refresh token: " + e.getMessage());
                 return;
             }
         }

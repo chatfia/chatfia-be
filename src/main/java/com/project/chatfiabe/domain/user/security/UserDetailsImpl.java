@@ -8,7 +8,11 @@ import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
     private final User user;
+
     public UserDetailsImpl(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
         this.user = user;
     }
 
@@ -31,7 +35,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
         return null;
     }
 
