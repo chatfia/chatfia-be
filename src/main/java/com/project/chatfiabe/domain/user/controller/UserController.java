@@ -97,7 +97,7 @@ public class UserController {
      * @param userDetails 인증된 사용자 정보
      * @return 사용자 정보와 HTTP 상태 코드 200 (OK)
      */
-    @GetMapping
+    @GetMapping("/info")
     public ResponseEntity<UserInfoResponseDto> getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         UserInfoResponseDto userInfoResponseDto = userService.getUserInfo(userDetails.getUser());
         return ResponseEntity.ok(userInfoResponseDto);
