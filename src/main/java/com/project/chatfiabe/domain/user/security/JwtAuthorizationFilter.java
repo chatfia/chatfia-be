@@ -76,6 +76,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         context.setAuthentication(authentication);
 
         SecurityContextHolder.setContext(context);
+        log.info("Authentication set for email : {}", email);
     }
 
     /**
@@ -85,6 +86,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
      */
     private Authentication createAuthentication(String email) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        log.info("UserDetails loaded for email : {}", email);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }
