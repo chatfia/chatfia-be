@@ -15,12 +15,13 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of(
-                "https://www.chatfia.online", "https://chatfia.online", "https://api.chatfia.online",
-                "http://www.chatfia.online", "http://chatfia.online", "http://api.chatfia.online",
-                "https://chatfia.vercel.app", "http://chatfia.vercel.app", "http://localhost:3000"
-        ));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        config.addAllowedOriginPattern("https://www.chatfia.online");
+        config.addAllowedOriginPattern("https://chatfia.online");
+        config.addAllowedOriginPattern("https://api.chatfia.online");
+        config.addAllowedOriginPattern("https://chatfia.vercel.app");
+        config.addAllowedOriginPattern("http://localhost:3000");
+        config.addAllowedOriginPattern("http://localhost:3001");
+        config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.addExposedHeader("*");
         config.setMaxAge(3600L);
