@@ -88,7 +88,7 @@ public class SecurityConfig {
         security.csrf((csrf) -> csrf.disable());
         security.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
-//        security.cors(Customizer.withDefaults()); // CORS 설정 추가
+        security.cors(Customizer.withDefaults()); // CORS 설정 추가
 
         // API 제어 설정 : 요청된 URI(URL) 기반으로 인증/인가 제어
         security.authorizeHttpRequests((request) ->
