@@ -19,6 +19,10 @@ public class CorsConfig {
         config.addAllowedOriginPattern("https://chatfia.online");
         config.addAllowedOriginPattern("https://api.chatfia.online");
         config.addAllowedOriginPattern("https://chatfia.vercel.app");
+        config.addAllowedOriginPattern("http://www.chatfia.online");
+        config.addAllowedOriginPattern("http://chatfia.online");
+        config.addAllowedOriginPattern("http://api.chatfia.online");
+        config.addAllowedOriginPattern("http://chatfia.vercel.app");
         config.addAllowedOriginPattern("http://localhost:3000");
         config.addAllowedOriginPattern("http://localhost:3001");
         config.addAllowedMethod("*");
