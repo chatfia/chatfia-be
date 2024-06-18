@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -91,12 +92,23 @@ public class SecurityConfig {
         security.cors(Customizer.withDefaults()); // CORS 설정 추가
 
         // API 제어 설정 : 요청된 URI(URL) 기반으로 인증/인가 제어
-        security.authorizeHttpRequests((request) ->
-                        request.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용
-                                .requestMatchers("/auth/**", "/login", "/signup").permitAll() // 로그인 & 회원가입 & Refresh Token 갱신 허가 (WHITE_LIST)
-                                .requestMatchers("/actuator/health").permitAll() // health check API 허가 (WHITE_LIST)
-//                                .anyRequest().permitAll()
-                                .anyRequest().authenticated() // 그 외 모든 요청 인증처리 진행
+//        security.authorizeHttpRequests((request) ->
+//                        request.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용
+//                                .requestMatchers("/auth/**", "/login", "/signup").permitAll() // 로그인 & 회원가입 & Refresh Token 갱신 허가 (WHITE_LIST)
+//                                .requestMatchers("/actuator/health").permitAll() // health check API 허가 (WHITE_LIST)
+////                                .anyRequest().permitAll()
+//                                .anyRequest().authenticated() // 그 외 모든 요청 인증처리 진행
+//        );
+
+        security.authorizeHttpRequests((authorizeHttpRequests) ->
+                authorizeHttpRequests
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
+                        .anyRequest().permitAll()
         );
 
         // Security 의 기본 설정인 Session 방식이 아닌 JWT 방식을 사용하기 위한 설정
