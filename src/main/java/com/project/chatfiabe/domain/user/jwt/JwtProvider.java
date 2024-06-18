@@ -110,13 +110,15 @@ public class JwtProvider {
      */
     public Claims getUserInfoFromToken(String token) {
         try {
-            return Jwts.parserBuilder()
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+            log.info("User info extracted from token: {}", claims.getSubject());
+            return claims;
         } catch (Exception e) {
-            log.error("Failed to get user info from token: " + e.getMessage());
+            log.error("Error parsing JWT token: {}", e.getMessage());
             return null;
         }
     }
