@@ -4,6 +4,7 @@ import com.project.chatfiabe.domain.user.repository.AccessTokenRepository;
 import com.project.chatfiabe.domain.user.jwt.JwtProvider;
 import com.project.chatfiabe.domain.user.repository.AccessLogRepository;
 import com.project.chatfiabe.domain.user.repository.RefreshTokenRepository;
+import com.project.chatfiabe.domain.user.repository.UserRepository;
 import com.project.chatfiabe.domain.user.security.JwtAuthenticationFilter;
 import com.project.chatfiabe.domain.user.security.JwtAuthorizationFilter;
 import com.project.chatfiabe.domain.user.security.UserDetailsServiceImpl;
@@ -38,6 +39,7 @@ public class SecurityConfig {
     private final AccessLogRepository accessLogRepository;
     private final AccessTokenRepository accessTokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
 
     /**
      * Security 에서 제공하는 비밀번호 암호화 인터페이스의 구현체를 Bean 으로 등록
@@ -63,7 +65,7 @@ public class SecurityConfig {
      * @return JwtAuthenticationFilter
      */
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+    public JwtAuthenticationFilter jwtAuthenticationFilter(UserRepository userRepository) throws Exception {
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtProvider, accessLogRepository, accessTokenRepository, refreshTokenRepository);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
@@ -122,7 +124,7 @@ public class SecurityConfig {
 
         // JWT 필터 등록
         security.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
-        security.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        security.addFilterBefore(jwtAuthenticationFilter(userRepository), UsernamePasswordAuthenticationFilter.class);
 
         return security.build();
     }
