@@ -81,7 +81,9 @@ public class JwtProvider {
      * @return Header 에서 추출한 JWT
      */
     public String getJwtFromHeader(HttpServletRequest request, TokenType tokenType) {
-        String bearerToken = request.getHeader(TokenType.ACCESS.equals(tokenType) ? ACCESS_TOKEN_HEADER : REFRESH_TOKEN_HEADER);
+        String header = request.getHeader(TokenType.ACCESS.equals(tokenType) ? ACCESS_TOKEN_HEADER : REFRESH_TOKEN_HEADER);
+        String bearerToken = request.getHeader(header);
+        log.info("Extracting {} token from header: {}", tokenType, bearerToken);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
@@ -96,6 +98,7 @@ public class JwtProvider {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            log.info("Token validation successful");
             return true;
         } catch (Exception e) {
             log.error("Invalid Token: " + e.getMessage());
