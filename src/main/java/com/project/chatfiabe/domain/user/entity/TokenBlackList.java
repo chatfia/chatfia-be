@@ -1,5 +1,6 @@
 package com.project.chatfiabe.domain.user.entity;
 
+import com.project.chatfiabe.domain.user.jwt.constant.TokenType;
 import com.project.chatfiabe.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;

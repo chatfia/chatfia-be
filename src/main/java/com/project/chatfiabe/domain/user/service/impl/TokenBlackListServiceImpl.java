@@ -1,8 +1,8 @@
 package com.project.chatfiabe.domain.user.service.impl;
 
 import com.project.chatfiabe.domain.user.entity.TokenBlackList;
-import com.project.chatfiabe.domain.user.entity.TokenType;
-import com.project.chatfiabe.domain.user.jwt.JwtProvider;
+import com.project.chatfiabe.domain.user.jwt.constant.TokenType;
+import com.project.chatfiabe.domain.user.jwt.util.JwtTokenUtil;
 import com.project.chatfiabe.domain.user.repository.TokenBlackListRepository;
 import com.project.chatfiabe.domain.user.service.TokenBlackListService;
 import io.jsonwebtoken.Claims;
@@ -17,14 +17,14 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class TokenBlackListServiceImpl implements TokenBlackListService {
-    private final JwtProvider jwtProvider;
+    private final JwtTokenUtil jwtTokenUtil;
     private final TokenBlackListRepository tokenBlackListRepository;
 
     @Override
     @Transactional
     public void addToBlackList(String accessToken, String refreshToken) {
-        Claims accessClaims = jwtProvider.getUserInfoFromToken(accessToken);
-        Claims refreshClaims = jwtProvider.getUserInfoFromToken(refreshToken);
+        Claims accessClaims = jwtTokenUtil.getUserInfoFromToken(accessToken);
+        Claims refreshClaims = jwtTokenUtil.getUserInfoFromToken(refreshToken);
 
         tokenBlackListRepository.save(new TokenBlackList(
                 accessToken,

@@ -7,12 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
+
     private final User user;
 
     public UserDetailsImpl(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User cannot be null");
-        }
         this.user = user;
     }
 
@@ -20,17 +18,14 @@ public class UserDetailsImpl implements UserDetails {
         return user;
     }
 
-    public String getEmail() {
-        return user.getEmail();
+    @Override
+    public String getPassword() {
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
         return user.getEmail();
-    }
-    @Override
-    public String getPassword() {
-        return user.getPassword();
     }
 
     @Override
@@ -57,5 +52,4 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }
