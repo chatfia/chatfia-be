@@ -1,64 +1,66 @@
 package com.project.chatfiabe.domain.user.controller;
 
 import com.project.chatfiabe.domain.user.dto.*;
-import com.project.chatfiabe.domain.user.entity.TokenType;
-import com.project.chatfiabe.domain.user.jwt.JwtProvider;
 import com.project.chatfiabe.domain.user.security.UserDetailsImpl;
-import com.project.chatfiabe.domain.user.service.AuthService;
 import com.project.chatfiabe.domain.user.service.TokenBlackListService;
 import com.project.chatfiabe.domain.user.service.UserService;
+import com.project.chatfiabe.global.exception.BaseException;
+import com.project.chatfiabe.global.exception.BaseResponse;
+import com.project.chatfiabe.global.exception.BaseResponseStatus;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api")
 public class UserController {
-    private final JwtProvider jwtProvider;
-    private final AuthService authService;
     private final UserService userService;
     private final TokenBlackListService tokenBlackListService;
 
-    /**
-     * 회원가입
-     * @param requestDto 회원가입 요청 DTO
-     * @return 회원가입 결과와 HTTP 상태 코드 200 (OK)
-     */
+    // 1. 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponseDto> signup(@RequestBody SignupRequestDto requestDto) {
-        return ResponseEntity.ok(userService.signup(requestDto));
+    public ResponseEntity<BaseResponse<Void>> registerAccount(@Valid @RequestBody SignupRequestDto requestDto,
+                                                              BindingResult bindingResult)
+            throws MethodArgumentNotValidException {
+        userService.registerAccount(requestDto, bindingResult);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new BaseResponse<>(BaseResponseStatus.REGISTER_ACCOUNT_SUCCESS));
     }
 
-    /**
-     * 로그아웃
-     * @param request HTTP 요청 객체
-     * @return HTTP 상태 코드 204 (No Content)
-     */
-    @GetMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request) {
-        tokenBlackListService.addToBlackList(
-                jwtProvider.getJwtFromHeader(request, TokenType.ACCESS),
-                jwtProvider.getJwtFromHeader(request, TokenType.REFRESH)
-        );
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    // 3. 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<BaseResponse<Void>> logout(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                     HttpServletResponse httpServletResponse) {
+        try {
+            userService.logout(userDetails.getUser(), httpServletResponse);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new BaseResponse<>(BaseResponseStatus.LOGOUT_SUCCESS));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new BaseResponse<>(BaseResponseStatus.LOGOUT_FAILED));
+        }
     }
 
-    /**
-     * 토큰 리프레시
-     * @param request HTTP 요청 객체
-     * @return 새로 발급된 액세스 토큰과 HTTP 상태 코드 200 (OK)
-     */
-    @GetMapping("/refresh")
-    public ResponseEntity<String> refresh(HttpServletRequest request) {
-        String accessToken = authService.refreshAccessToken(jwtProvider.getJwtFromHeader(request, TokenType.REFRESH));
-        return ResponseEntity.ok(accessToken);
-    }
+//    /**
+//     * 토큰 리프레시
+//     * @param request HTTP 요청 객체
+//     * @return 새로 발급된 액세스 토큰과 HTTP 상태 코드 200 (OK)
+//     */
+//    @GetMapping("/refresh")
+//    public ResponseEntity<String> refresh(HttpServletRequest request) {
+//        String accessToken = authService.refreshAccessToken(jwtProvider.getJwtFromHeader(request, TokenType.REFRESH));
+//        return ResponseEntity.ok(accessToken);
+//    }
 
     /**
      * 블랙리스트 초기화
@@ -111,15 +113,18 @@ public class UserController {
         return ResponseEntity.ok(userInfoResponseDto);
     }
 
-    /**
-     * 회원 탈퇴
-     * @param userDetails 인증된 사용자 정보
-     * @param requestDto  회원 탈퇴 요청 DTO
-     * @return 회원 탈퇴 완료 메시지와 HTTP 상태 코드 200 (OK)
-     */
-    @DeleteMapping("/info")
-    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody DeleteUserInfoRequestDto requestDto) {
-        userService.deleteUser(userDetails.getUser(), requestDto);
-        return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
+    // 4. 회원탈퇴
+    @DeleteMapping("/delete")
+    public ResponseEntity<BaseResponse<Void>> deleteAccount(@Valid @RequestBody DeleteRequestDto deleteRequestDto,
+                                                            @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                            HttpServletResponse httpServletResponse) {
+        try {
+            userService.deleteAccount(userDetails.getUser(), deleteRequestDto.getPassword(), httpServletResponse);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new BaseResponse<>(BaseResponseStatus.DELETE_ACCOUNT_SUCCESS));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new BaseResponse<>(BaseResponseStatus.DELETE_ACCOUNT_FAILED));
+        }
     }
 }
