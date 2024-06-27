@@ -39,8 +39,7 @@ public class MailController {
         }
     }
 
-    // 인증번호 확인 버튼 클릭
-    @GetMapping
+    @PostMapping("/code")
     public ResponseEntity<Void> getCode (@RequestBody MailRequestDto requestDto) {
         String code = redisService.getCode(requestDto.getEmail());
         if (!code.equals(requestDto.getCode())) {
